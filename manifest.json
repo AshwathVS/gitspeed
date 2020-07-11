@@ -1,0 +1,15 @@
+{
+  "name": "Gitspeed",
+  "version": "1.0",
+  "description": "Gitspeed will do something with git......",
+  "permissions": ["tabs", "storage"],
+  "content_scripts": [
+    { "matches": ["http://*/*", "https://*/*"], "js": ["content.js"] }
+  ],
+  "page_action": {
+    "default_popup": "home.html",
+    "default_title": "Blah blah blah"
+  },
+  "web_accessible_resources": ["script.js"],
+  "manifest_version": 2
+}
