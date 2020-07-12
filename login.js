@@ -1,10 +1,19 @@
+const githubAuthorize = "https://github.com/login/oauth/authorize";
+
 document.addEventListener("DOMContentLoaded", function () {
+  chrome.storage.local.get(["gitspeed-user"], (user) => {
+    if (user && user["gitspeed-user"]) {
+      chrome.browserAction.setPopup({
+        popup: "home.html",
+      });
+      window.location.href = window.location.href.replace(
+        "login.html",
+        "home.html"
+      );
+    }
+  });
   document.getElementById("btn-login").addEventListener("click", function () {
     initOAuthFlow();
-  });
-
-  chrome.runtime.onMessage.addListener((message, callback) => {
-    console.log("Message received", message);
   });
 });
 
@@ -16,8 +25,6 @@ function initOAuthFlow() {
     state: getRandomState(),
   };
 
-  // actual code
-  const githubAuthorize = "https://github.com/login/oauth/authorize";
   window.open(githubAuthorize + "?" + buildFromQueryParams(queryparams));
 }
 

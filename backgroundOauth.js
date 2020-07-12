@@ -26,19 +26,19 @@ chrome.runtime.onMessage.addListener((req, sender, callback) => {
   }
 });
 
-chrome.browserAction.onClicked.addListener((tab) => {
-  console.log("fired");
-  chrome.storage.local.get(["gitspeed-user"], (data) => {
-    const userData = data["gitspeed-user"];
-    console.log(userData);
-    if (userData && userData.access_token) {
-      chrome.browserAction.setPopup({
-        popup: "home.html",
-      });
-    } else {
-      chrome.browserAction.setPopup({
-        popup: "login.html",
-      });
-    }
-  });
-});
+// chrome.browserAction.onClicked.addListener((tab) => {
+//   console.log("fired");
+//   chrome.storage.local.get(["gitspeed-user"], (data) => {
+//     const userData = data["gitspeed-user"];
+//     console.log(userData);
+//     if (userData && userData.access_token) {
+//       chrome.browserAction.setPopup({
+//         popup: "home.html",
+//       });
+//     } else {
+//       chrome.browserAction.setPopup({
+//         popup: "login.html",
+//       });
+//     }
+//   });
+// });
