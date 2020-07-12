@@ -1,15 +1,42 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8" />
-    <title>Login Page</title>
-    <script type="text/javascript" src="axios.min.js"></script>
-    <script type="text/javascript" src="login.js"></script>
+
+    <!-- bootstrap link -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+    crossorigin="anonymous">
+
+    <!-- fontawesome -->
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- css file -->
+    <link rel="stylesheet" href="login.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
   </head>
   <body>
-    <!-- Login page -->
-    <button id="btn-login">
-      Login
-    </button>
+
+    <!-- login card -->
+
+    <div class="login">
+        <div class="card text-center">
+          <div class="card-header">
+            Login to your GitHub
+          </div>
+          <div class="card-body">
+            <a href="#" class="git btn">
+              <i class="fa fa-github fa-fw"></i> Sign in with GitHub
+            </a>
+          </div>
+
+          <div class="card-footer" id='footer'>
+            <a href="#"><u>Check GitSpeed GitHub Repo</u></a>
+          </div>
+        </div>
+
+    </div>
   </body>
 </html>

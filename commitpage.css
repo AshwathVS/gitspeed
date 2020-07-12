@@ -1,0 +1,22 @@
+/*  */
+/* commitpage styles */
+/*  */
+
+
+
+.base{
+  text-align: center;
+}
+
+.card{
+  width: 400px;
+  display: inline-block;
+}
+
+#selectrepo{
+  margin-top: 10px;
+}
+
+input:focus::placeholder {
+  color: transparent;
+}
