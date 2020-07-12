@@ -1,20 +1,22 @@
-// Content script will run the on the content of the parent page, so will be able to access DOM of parent
-chrome.extension.onRequest.addListener(function (
-  request,
-  sender,
-  sendResponse
-) {
-  if (request.action == "getSelection") {
-    sendResponse({
-      selection: document.getSelection(),
-    });
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  console.log("listener called", request.action, request.params);
+  console.log(sendResponse);
+  if (request.action == "init-commit") {
+    console.log("init-commit");
+    if (
+      !request.params.repo ||
+      !request.params.file ||
+      !request.params.commitMessage
+    ) {
+      // do nothing
+      console.log("Invalid params for init commit event call");
+    } else {
+      sendResponse({
+        selection: document.getSelection().toString(),
+        repo: request.params.repo,
+        file: request.params.file,
+        commitMessage: request.params.commitMessage,
+      });
+    }
   } else sendResponse({});
 });
-
-// Injection of script may not be needed for this extension, just keeping it just in case..
-var s = document.createElement("script");
-s.src = chrome.runtime.getURL("script.js");
-s.onload = function () {
-  this.remove();
-};
-(document.head || document.documentElement).appendChild(s);
