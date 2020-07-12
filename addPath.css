@@ -1,0 +1,22 @@
+/*  */
+/* addrepopage styles */
+/*  */
+
+
+.lastpage{
+  text-align: center;
+}
+
+.card{
+  display: inline-block;
+  width: 400px;
+}
+
+.btn{
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+input:focus::placeholder {
+  color: transparent;
+}
