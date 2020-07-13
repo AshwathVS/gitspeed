@@ -1,6 +1,4 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  console.log("listener called", request.action, request.params);
-  console.log(sendResponse);
   if (request.action == "init-commit") {
     console.log("init-commit");
     if (
@@ -9,7 +7,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       !request.params.commitMessage
     ) {
       // do nothing
-      console.log("Invalid params for init commit event call");
+      console.error("Invalid params for init commit event call");
     } else {
       sendResponse({
         selection: document.getSelection().toString(),

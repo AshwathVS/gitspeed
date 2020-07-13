@@ -1,8 +1,8 @@
 const githubAuthorize = "https://github.com/login/oauth/authorize";
 
 document.addEventListener("DOMContentLoaded", function () {
-  chrome.storage.local.get(["gitspeed-user"], (user) => {
-    if (user && user["gitspeed-user"]) {
+  chrome.storage.sync.get(["gitspeedUser"], (user) => {
+    if (user && user.gitspeedUser) {
       chrome.browserAction.setPopup({
         popup: "home.html",
       });

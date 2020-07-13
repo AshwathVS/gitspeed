@@ -1,29 +1,59 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-
     <!-- bootstrap link -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-    crossorigin="anonymous">
-
+    <link rel="stylesheet" href="bootstrap.min.css">
     <!-- css file -->
+
     <link rel="stylesheet" href="addPath.css">
 
-
-    <meta charset="utf-8">
-    <title></title>
+    <!-- Custom scripts-->
+    <script type="text/javascript" src="axios.min.js"></script>
+    <script type="text/javascript" src="addPath.js"></script>
   </head>
   <body>
 
     <div class="lastpage">
-      <div class="card text-center">
-        <div class="card-body">
-          <input class="form-control" type="text" placeholder="exampleRepo/folder/subfolder">
-          <a href="#commitpage.html>"<button type="button"
-                                      class="btn btn-outline-success">Add to your favorites</button></a>
-        </div>
+
+      <div class="card-header text-left">
+
       </div>
 
+      <div class="card text-center">
+
+        <div id="alert-box" class="alert alert-danger no-display" role="alert">
+
+        </div>
+
+        <div id="success-box" class="alert alert-success no-display" role="alert">
+
+        </div>
+
+        <div class="card-body text-left">
+          <div class="col">
+            <h6>Repository <span class="red-font">*</span></h6>
+            <select id="select-repo" class="form-control" placeholder="Select a path" disabled>
+              <option disabled selected value="##~~INVALID~~##">Select desired repository</option>
+            </select>
+          </div>
+          <br>
+          <div class="col">
+            <h6>Directory <span class="red-font">*</span></h6>
+            <select id="select-folder" class="form-control" placeholder="Select a path" disabled>
+              <option disabled selected value="##~~INVALID~~##">Select desired directory</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <button id="btn-add" class="btn btn-outline-success">Add to favourites</button>
+          <button id="btn-cancel" class="btn btn-outline-danger">Cancel</button>
+        </div>
+
+        <div class="card-footer" id='footer'>
+<!--          Footer text-->
+        </div>
+      </div>
+    </div>
   </body>
 </html>

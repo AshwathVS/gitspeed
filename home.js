@@ -1,156 +1,148 @@
-const githubRepoEndpoint = "https://api.github.com/user/repos";
-
-const githubRepoContentsEndpoint =
-  "https://api.github.com/repos/#username/#repo/contents";
-
 const githubCommitEndpoint =
   "https://api.github.com/repos/#username/#repo/contents/#file";
 
-const pickSubsetFromMap = function (arrayOfObjects, keys) {
-  const newObject = [];
-  arrayOfObjects.forEach((ele) => {
-    var subset = {};
-    keys.forEach((key) => {
-      subset[key] = ele[key];
-    });
-    newObject.push(subset);
-  });
-  return newObject;
-};
-
 document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("btn-repo").addEventListener("click", fetchRepo);
 
-  document.getElementById("btn-dir").addEventListener("click", fetchDir);
+  document.getElementById("btn-cancel").addEventListener("click", resetPage);
 
   document.getElementById("btn-commit").addEventListener("click", initCommit);
+
+  document.getElementById("btn-add-repo").addEventListener("click", addNewPath);
+
+  populatePaths();
 });
 
-function fetchRepo() {
-  console.log("fetch repo clicked");
-  chrome.storage.local.get(["gitspeed-user"], (data) => {
-    const userData = data["gitspeed-user"];
-    const accessToken = userData.access_token;
-    axios
-      .get(githubRepoEndpoint, {
-        headers: {
-          Authorization: "token " + accessToken,
-        },
-      })
-      .then(processRepoResponse)
-      .catch((error) => {});
-  });
+function addNewPath() {
+  document.location.href = document.location.href.replace("home.html", "addPath.html");
 }
 
-function processRepoResponse(resp) {
-  if (resp.data) {
-    const repos = pickSubsetFromMap(resp.data, ["name", "full_name"]);
-    populateRepoBox(repos);
-  }
+function resetPage() {
+  document.location.reload();
 }
 
-function fetchDir(repo) {
-  repo = "Programming";
-  if (repo) {
-    chrome.storage.local.get(["gitspeed-user"], (data) => {
-      const userData = data["gitspeed-user"];
-      const username = userData.username;
-      const accessToken = userData.access_token;
-
-      const url = githubRepoContentsEndpoint
-        .replace("#username", username)
-        .replace("#repo", repo);
-      axios
-        .get(url, {
-          headers: {
-            Authorization: "token " + accessToken,
-          },
-        })
-        .then((resp) => {
-          const allDirs = recurseAllDirs(
-            resp.data.filter((content) => {
-              return content.type == "dir";
-            }),
-            userData
-          );
-          allDirs.sort();
-          console.log(allDirs);
-        })
-        .catch((error) => {
-          console.log(error);
+function populatePaths() {
+  chrome.storage.sync.get(['gitspeedData'], (data) => {
+    if(data && data.gitspeedData) {
+      const collection = data.gitspeedData.collection;
+      if (collection && collection.length > 0) {
+        const selectPathElement = document.getElementById('select-path');
+        collection.sort((a, b) => {
+          if(a.repo == b.repo) {
+            return a.folder - b.folder;
+          } else {
+            return a.repo - b.repo;
+          }
         });
-    });
-  }
+        collection.forEach((ele) => {
+          const opt = document.createElement('option');
+          opt.value = ele.repo + ":" + ele.folder;
+          opt.title = "Repository: " + ele.repo + "\nDirectory: " + ele.folder;
+          opt.innerHTML = ele.repo + ":  " + ele.folder;
+          selectPathElement.appendChild(opt);
+        });
+      }
+    }
+  });
+  document.getElementById('select-path').disabled = false;
 }
 
-function recurseAllDirs(dirs, userData) {
-  var allDirs = [];
-  allDirs.push("/");
-  dirs.forEach((dir) => {
-    allDirs.push(dir.path);
-    axios
-      .get(dir.git_url + "?recursive=1", {
-        headers: {
-          Authorization: "token " + userData.access_token,
-        },
-      })
-      .then((resp) => {
-        resp.data.tree.forEach((ele) => {
-          if (ele.type == "tree") allDirs.push(dir.path + "/" + ele.path);
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  });
-  return allDirs;
+function triggerNotificationBox(type, alertMsg) {
+  const box = (type == "alert") ? "alert-box" : "success-box";
+  const element = document.getElementById(box);
+
+  element.innerText = alertMsg;
+  element.style.display = 'block';
+
+  setTimeout(() => {
+    element.innerText = '';
+    element.style.display = 'none';
+  }, 2000);
 }
 
 function initCommit() {
-  const repo = "gittest"; // fetch from dom
-  const fileWithPath = "Heyooo.java"; // fetch from dom
-  const commitMessage = "Commit using gitspeed chrome extension"; // fetch from dom
+  const option = document.getElementById('select-path').value;
+  const filename = document.getElementById('inp-filename').value;
+  const fileContent = document.getElementById('inp-file-content').value;
+  let commitMessage = document.getElementById('inp-commit-message').value;
 
-  chrome.tabs.getSelected(null, function (tab) {
-    chrome.tabs.sendMessage(
-      tab.id,
-      {
-        action: "init-commit",
-        params: {
-          repo: repo,
-          file: fileWithPath,
-          commitMessage: commitMessage,
-        },
-      },
-      null,
-      commit
-    );
-  });
+  if (!commitMessage) {
+    commitMessage = "Commit made using gitspeed chrome extension";
+  }
+
+  if (option == "##~~INVALID~~##" || !filename || !fileContent) {
+    triggerNotificationBox('alert', "Fill in the mandatory fields and try again");
+    return;
+  }
+
+  const split = option.split(':');
+  const repo = split[0].trim();
+  const filePath = split[1].trim();
+
+  let fileNameWithPath;
+  if(filePath != "/") {
+    fileNameWithPath = split[1].trim() + "/" + filename;
+  } else {
+    fileNameWithPath = filename;
+  }
+
+  commit({repo: repo, selection: btoa(fileContent), file: fileNameWithPath, commitMessage: commitMessage});
+
+  // TODO: Seems to be some issue with messages (Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist)
+  // TODO: Selection sometimes does not get the actual content (happens in hackerrank at times)
+  // TODO: Resolve error and remove file content box to fetch file content from document.getSelection()
+  // chrome.tabs.getSelected(null, function (tab) {
+  //   chrome.tabs.sendMessage(
+  //       tab.id,
+  //       {
+  //         action: "init-commit",
+  //         params: {
+  //           repo: repo,
+  //           file: fileNameWithPath,
+  //           commitMessage: commitMessage,
+  //         },
+  //       },
+  //       null,
+  //       commit
+  //   );
+  // });
 }
 
 function commit(commitData) {
+  if (!commitData) {
+    triggerNotificationBox('alert', 'Something unexpected happened, please try again.');
+    return;
+  }
   const selection = commitData.selection;
   const repo = commitData.repo;
   const file = commitData.file;
   const commitMessage = commitData.commitMessage;
 
-  chrome.storage.local.get(["gitspeed-user"], (data) => {
-    const userData = data["gitspeed-user"];
+  console.log('selection', selection);
+  console.log('repo', repo);
+  console.log('file', file);
+  console.log('commitMessage', commitMessage);
+
+  chrome.storage.sync.get(["gitspeedUser"], (data) => {
+    const userData = data.gitspeedUser;
     const url = githubCommitEndpoint
-      .replace("#username", userData.username)
-      .replace("#repo", repo)
-      .replace("#file", file);
+        .replace("#username", userData.username)
+        .replace("#repo", repo)
+        .replace("#file", file);
     axios.put(
-      url,
-      {
-        message: commitMessage,
-        content: btoa(selection.toString()),
-      },
-      {
-        headers: {
-          Authorization: "token " + userData.access_token,
+        url,
+        {
+          message: commitMessage,
+          content: selection,
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: "token " + userData.access_token,
+          },
+        }
+    ).then((success) => {
+      triggerNotificationBox('success', "Commit has been successful");
+    }).catch((error) => {
+      triggerNotificationBox('alert', 'Unexpected error during commit, please try again.');
+    });
   });
 }

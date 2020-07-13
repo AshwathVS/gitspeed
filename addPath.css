@@ -2,7 +2,6 @@
 /* addrepopage styles */
 /*  */
 
-
 .lastpage{
   text-align: center;
 }
@@ -19,4 +18,12 @@
 
 input:focus::placeholder {
   color: transparent;
+}
+
+.red-font {
+  color: red;
+}
+
+.no-display {
+ display: none;
 }

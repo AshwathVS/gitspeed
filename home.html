@@ -1,29 +1,76 @@
-<html>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
   <head>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
+
+    <!-- bootstrap link -->
+    <link rel="stylesheet" href="bootstrap.min.css">
+
+    <!-- css file -->
+    <link rel="stylesheet" href="home.css">
+
+    <meta charset="utf-8">
     <script type="text/javascript" src="axios.min.js"></script>
     <script type="text/javascript" src="home.js"></script>
-    <style></style>
   </head>
-  <body style="width: 400px;">
-    <div style="padding: 5%; padding-bottom: 0%;">
-      <!-- home page which has the options for push and all that -->
-      Home sweeet home
-      <br />
-      <button id="btn-repo">Fetch repos</button>
-      <br />
-      <button id="btn-dir">Fetch dir</button>
-      <br />
-      <button id="btn-commit">Commit</button>
+  <body>
+    <div class="base">
+
+      <div class="card text-center">
+
+        <div class="card-header text-left">
+
+        </div>
+
+        <div id="alert-box" class="alert alert-danger no-display" role="alert">
+
+        </div>
+
+        <div id="success-box" class="alert alert-success no-display" role="alert">
+
+        </div>
+
+        <!-- File Name Enter -->
+        <div class="card-body text-left">
+          <h6>Select a path <span class="red-font">*</span></h6>
+          <div class="form-row">
+            <div class="col">
+              <select id="select-path" class="form-control" placeholder="Select a path">
+                <option disabled selected value="##~~INVALID~~##">Select a path</option>
+              </select>
+            </div> &nbsp;&nbsp;&nbsp;
+            <div class="col-2">
+              <button id="btn-add-repo" class="btn btn-outline-success" data-toggle="tooltip" title="Add path"><b>+</b></button>
+            </div>
+          </div>
+          <br>
+          <h6>Enter File Name <span class="red-font">*</span></h6>
+          <div class="input-group mb-3">
+            <input id="inp-filename" type="text" class="form-control" placeholder="lru_cache.cpp"
+                    aria-label="Recipient's username" aria-describedby="button-addon2">
+          </div>
+
+          <div class="form-group">
+            <h6>Enter file content <span class="red-font">*</span></h6>
+            <textarea id="inp-file-content" class="form-control" rows="5" placeholder="#include<bits/stdc++.h> &#10;using namespace std;&#10;{&#10;    // magic &#10;}"></textarea>
+          </div>
+
+          <div class="form-group">
+            <h6>Commit Message:</h6>
+            <textarea id="inp-commit-message" class="form-control" rows="2" placeholder="Commit made using gitspeed (optional)"></textarea>
+          </div>
+
+          <div class="text-center">
+            <button id="btn-commit" type="button" class="btn btn-success">Commit File</button> &nbsp;
+            <button id="btn-cancel" type="button" class="btn btn-outline-danger">Cancel</button>
+          </div>
+        </div>
+
+        <!-- Commit/Cancel Footer -->
+        <div class="card-footer" id='footer'>
+
+        </div>
+      </div>
     </div>
+
   </body>
 </html>

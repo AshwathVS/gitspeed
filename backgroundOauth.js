@@ -14,7 +14,7 @@ chrome.runtime.onMessage.addListener((req, sender, callback) => {
         .then((resp) => {
           const user = resp.data.user;
           console.log(user);
-          chrome.storage.local.set({ "gitspeed-user": user }, function () {
+          chrome.storage.sync.set({ "gitspeedUser": user }, function () {
             console.log("Value is set to " + user);
           });
         })
@@ -28,8 +28,8 @@ chrome.runtime.onMessage.addListener((req, sender, callback) => {
 
 // chrome.browserAction.onClicked.addListener((tab) => {
 //   console.log("fired");
-//   chrome.storage.local.get(["gitspeed-user"], (data) => {
-//     const userData = data["gitspeed-user"];
+//   chrome.storage.local.get(["gitspeedUser"], (data) => {
+//     const userData = data["gitspeedUser"];
 //     console.log(userData);
 //     if (userData && userData.access_token) {
 //       chrome.browserAction.setPopup({
