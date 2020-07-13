@@ -47,6 +47,11 @@ function addLogo() {
         document.location.href = document.location.href.replace("home.html", "login.html");
       });
     }
+  });
+
+  // Ctrl + Enter initiates commit
+  window.addEventListener("keyup", (event) => {
+    if (event.keyCode == 13 && event.ctrlKey) initCommit();
   })
 }
 
@@ -203,7 +208,12 @@ function commit(commitData) {
       triggerNotificationBox('success', "Commit has been successful");
       saveCommitDetails(repo, file, response);
     }).catch((error) => {
-      triggerNotificationBox('alert', 'Unexpected error during commit, please try again.');
+      const status = error.response.status;
+      if(status == 422 || status == 409) {
+        triggerNotificationBox('alert', 'Duplicate file that was not created using gitspeed already exists. Try changing the file name.');
+      } else {
+        triggerNotificationBox('alert', 'Unexpected error during commit, please try again.');
+      }
     });
   });
 }
