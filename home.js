@@ -10,7 +10,45 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("btn-add-repo").addEventListener("click", addNewPath);
 
   populatePaths();
+
+  addLogo();
+
 });
+
+function addLogo() {
+  chrome.storage.sync.get(['gitspeedUser'], (data) => {
+    if(data && data.gitspeedUser) {
+      const userData = data.gitspeedUser;
+      const userLogo = document.getElementById('user-logo');
+      userLogo.src = userData.avatar_url;
+      userLogo.title = userData.username;
+
+      userLogo.addEventListener("click", () => {
+        var contextElement = document.getElementById("context-menu");
+        if (contextElement.classList.contains("active")) {
+          contextElement.classList.remove("active");
+        } else {
+          contextElement.style.top = 50 + "px";
+          contextElement.style.right = 10 + "px";
+          contextElement.classList.add("active");
+          contextElement.focus();
+        }
+      });
+
+      document.getElementById("go-to-profile").addEventListener("click", () => {
+        window.open("https://www.github.com/" + userData.username);
+      });
+
+      document.getElementById("logout").addEventListener("click", () => {
+        chrome.storage.sync.remove('gitspeedUser');
+        chrome.browserAction.setPopup({
+          popup: "login.html",
+        });
+        document.location.href = document.location.href.replace("home.html", "login.html");
+      });
+    }
+  })
+}
 
 function addNewPath() {
   document.location.href = document.location.href.replace("home.html", "addPath.html");

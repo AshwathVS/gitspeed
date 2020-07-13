@@ -26,3 +26,74 @@ input:focus::placeholder {
 .no-display {
   display: none;
 }
+
+.header-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  vertical-align: bottom;
+}
+
+.footer-logo {
+  width: 25px;
+  height: 25px;
+}
+
+#content {
+  position:relative;
+}
+
+.ribbon {
+  position:absolute;
+  top: 12px;
+  right: 10px;
+}
+
+.header-font {
+  font-size: x-large;
+  font-family: "Georgia, serif";
+}
+.menu {
+  visibility: hidden;
+}
+
+button + .menu:active,
+button:focus + .menu {
+  visibility: visible;
+}
+
+body {
+  margin:0px;
+  font-family:"Open Sans",sans-serif;
+}
+#context-menu {
+  position:fixed;
+  z-index:10000;
+  width:150px;
+  background:#1b1a1a;
+  border-radius:5px;
+  transform:scale(0);
+  transform-origin:top left;
+}
+#context-menu.active {
+  transform:scale(1);
+  transition:transform 300ms ease-in-out;
+}
+#context-menu .item {
+  padding:8px 10px;
+  font-size:15px;
+  color:#eee;
+  cursor: pointer;
+}
+#context-menu .item:hover {
+  background:#555;
+}
+#context-menu .item i {
+  display:inline-block;
+  margin-right:5px;
+}
+#context-menu hr {
+  margin:2px 0px;
+  border-color:#555;
+}

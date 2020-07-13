@@ -14,13 +14,20 @@
   </head>
   <body>
     <div class="base">
+      <div id="content" class="card-header">
+        <img src="gitspeed.png" alt="G" class="header-logo"><span class="header-font">ITSPEED</span>
+        <div id="context-menu">
+          <div id="go-to-profile" class="item">
+            Go to profile
+          </div>
+          <div id="logout" class="item">
+            Logout
+          </div>
+        </div>
+        <img id="user-logo" class="ribbon header-logo" title="" alt="user-logo">
+      </div>
 
       <div class="card text-center">
-
-        <div class="card-header text-left">
-
-        </div>
-
         <div id="alert-box" class="alert alert-danger no-display" role="alert">
 
         </div>
@@ -30,14 +37,14 @@
         </div>
 
         <!-- File Name Enter -->
-        <div class="card-body text-left">
+        <div style="margin-top: 0%" class="card-body text-left">
           <h6>Select a path <span class="red-font">*</span></h6>
           <div class="form-row">
             <div class="col">
               <select id="select-path" class="form-control" placeholder="Select a path">
                 <option disabled selected value="##~~INVALID~~##">Select a path</option>
               </select>
-            </div> &nbsp;&nbsp;&nbsp;
+            </div>
             <div class="col-2">
               <button id="btn-add-repo" class="btn btn-outline-success" data-toggle="tooltip" title="Add path"><b>+</b></button>
             </div>
@@ -51,12 +58,12 @@
 
           <div class="form-group">
             <h6>Enter file content <span class="red-font">*</span></h6>
-            <textarea id="inp-file-content" class="form-control" rows="5" placeholder="#include<bits/stdc++.h> &#10;using namespace std;&#10;{&#10;    // magic &#10;}"></textarea>
+            <textarea id="inp-file-content" class="form-control" rows="4" placeholder="#include<bits/stdc++.h> &#10;using namespace std;&#10;int main() {&#10;....."></textarea>
           </div>
 
           <div class="form-group">
-            <h6>Commit Message:</h6>
-            <textarea id="inp-commit-message" class="form-control" rows="2" placeholder="Commit made using gitspeed (optional)"></textarea>
+            <h6>Commit Message</h6>
+            <textarea id="inp-commit-message" class="form-control" rows="1" placeholder="Commit made using gitspeed (optional)"></textarea>
           </div>
 
           <div class="text-center">
@@ -67,7 +74,7 @@
 
         <!-- Commit/Cancel Footer -->
         <div class="card-footer" id='footer'>
-
+          <span><a href="https://github.com/AshwathVS/gitspeed" target="_blank"><img class="footer-logo" src="github.png" alt="Github"></a></span> With love from <span><img class="footer-logo" src="india-logo.png" alt="India"></span>
         </div>
       </div>
     </div>

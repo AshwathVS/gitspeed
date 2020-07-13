@@ -27,3 +27,21 @@ input:focus::placeholder {
 .no-display {
  display: none;
 }
+
+.header-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  vertical-align: bottom;
+}
+
+.footer-logo {
+  width: 25px;
+  height: 25px;
+}
+
+.header-font {
+  font-size: x-large;
+  font-family: "Georgia, serif";
+}
