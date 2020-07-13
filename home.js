@@ -123,7 +123,21 @@ function initCommit() {
     fileNameWithPath = filename;
   }
 
-  commit({repo: repo, selection: btoa(fileContent), file: fileNameWithPath, commitMessage: commitMessage});
+  chrome.storage.sync.get(['gitspeedData'], (data) => {
+    const commits = data.gitspeedData.commits;
+    const fileHash = commits[repo + fileNameWithPath];
+    if (fileHash) {
+      commit({
+        repo: repo,
+        selection: btoa(fileContent),
+        file: fileNameWithPath,
+        commitMessage: commitMessage,
+        hash: fileHash
+      });
+    } else {
+      commit({repo: repo, selection: btoa(fileContent), file: fileNameWithPath, commitMessage: commitMessage});
+    }
+  })
 
   // TODO: Seems to be some issue with messages (Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist)
   // TODO: Selection sometimes does not get the actual content (happens in hackerrank at times)
@@ -154,11 +168,7 @@ function commit(commitData) {
   const repo = commitData.repo;
   const file = commitData.file;
   const commitMessage = commitData.commitMessage;
-
-  console.log('selection', selection);
-  console.log('repo', repo);
-  console.log('file', file);
-  console.log('commitMessage', commitMessage);
+  const fileHash = commitData.hash;
 
   chrome.storage.sync.get(["gitspeedUser"], (data) => {
     const userData = data.gitspeedUser;
@@ -166,21 +176,43 @@ function commit(commitData) {
         .replace("#username", userData.username)
         .replace("#repo", repo)
         .replace("#file", file);
+
+    var requestBody;
+    if (fileHash) {
+      requestBody = {
+        message: commitMessage,
+        content: selection,
+        sha: fileHash
+      }
+    } else {
+      requestBody = {
+        message: commitMessage,
+        content: selection,
+      };
+    }
+
     axios.put(
         url,
-        {
-          message: commitMessage,
-          content: selection,
-        },
+        requestBody,
         {
           headers: {
             Authorization: "token " + userData.access_token,
           },
         }
-    ).then((success) => {
+    ).then((response) => {
       triggerNotificationBox('success', "Commit has been successful");
+      saveCommitDetails(repo, file, response);
     }).catch((error) => {
       triggerNotificationBox('alert', 'Unexpected error during commit, please try again.');
     });
+  });
+}
+
+function saveCommitDetails(repo, file, response) {
+  chrome.storage.sync.get(['gitspeedData'], (data) => {
+    const gitspeedData = data.gitspeedData;
+    let commits = gitspeedData.commits;
+    commits[repo + file] = response.data.content.sha;
+    chrome.storage.sync.set({'gitspeedData': gitspeedData});
   });
 }

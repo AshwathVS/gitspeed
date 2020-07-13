@@ -75,29 +75,24 @@ function addToCollection(userData) {
     const repo = document.getElementById('select-repo').value;
     const folder = document.getElementById('select-folder').value;
 
-    if(repo == "##~~INVALID~~##" || folder == "##~~INVALID~~##") {
+    if (repo == "##~~INVALID~~##" || folder == "##~~INVALID~~##") {
         triggerNotificationBox('alert', 'Please select valid options before adding');
         return;
     }
 
     chrome.storage.sync.get(['gitspeedData'], (data) => {
-        if(data && data.gitspeedData) {
-            let collection = data.gitspeedData.collection;
-            const duplicate = collection.filter((ele) => {
-                return ele.repo == repo && ele.folder == folder;
-            });
+        const gitspeedData = data.gitspeedData;
+        let collection = gitspeedData.collection;
+        const duplicate = collection.filter((ele) => {
+            return ele.repo == repo && ele.folder == folder;
+        });
 
-            if(duplicate.length == 0) {
-                collection.push({repo: repo, folder: folder});
-                data.gitspeedData.collection = collection;
-                chrome.storage.sync.set({'gitspeedData': data.gitspeedData});
-            }
-        } else {
-            let data = {};
-            let collection = [{repo: repo, folder: folder}];
-            data.collection = collection;
-            chrome.storage.sync.set({'gitspeedData': data})
+        if (duplicate.length == 0) {
+            collection.push({repo: repo, folder: folder});
+            gitspeedData.collection = collection;
+            chrome.storage.sync.set({'gitspeedData': gitspeedData});
         }
+
         triggerNotificationBox('success', 'Successfully added');
     });
 }

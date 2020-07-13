@@ -4,23 +4,32 @@ chrome.runtime.onMessage.addListener((req, sender, callback) => {
     const state = req.params.state;
     if (code && state) {
       axios
-        .post(
-          "http://localhost:5001/gitti-space-sl/us-central1/api/fetch-user-token",
-          {
-            code: code,
-            state: state,
-          }
-        )
-        .then((resp) => {
-          const user = resp.data.user;
-          console.log(user);
-          chrome.storage.sync.set({ "gitspeedUser": user }, function () {
-            console.log("Value is set to " + user);
+          .post(
+              "http://localhost:5001/gitti-space-sl/us-central1/api/fetch-user-token",
+              {
+                code: code,
+                state: state,
+              }
+          )
+          .then((resp) => {
+            const user = resp.data.user;
+            console.log(user);
+            chrome.storage.sync.set({"gitspeedUser": user}, () => {
+              chrome.storage.sync.get(['gitspeedData'], (data) => {
+                  if(!data.gitspeedData) {
+                      chrome.storage.sync.set({
+                          'gitspeedData': {
+                              collection: [],
+                              commits: new Map()
+                          }
+                      });
+                  }
+              })
+            });
+          })
+          .catch((error) => {
+            console.log(error.response.data);
           });
-        })
-        .catch((error) => {
-          console.log(error.response.data);
-        });
     }
     callback();
   }
