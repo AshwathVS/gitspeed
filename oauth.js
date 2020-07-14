@@ -12,7 +12,8 @@ if (code && state) {
         state: state,
       },
     },
-    () => {}
+    () => {
+      window.close();
+    }
   );
-  window.close();
 }

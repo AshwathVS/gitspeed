@@ -134,7 +134,11 @@ const fetchRepositories = async(userData) => {
                 });
                 resolve(repositories);
             })
-            .catch(console.error);
+            .catch((error) => {
+              if(error.response.status == 401) {
+                triggerNotificationBox('alert', "Invalid access token found, please log in again to continue");
+              }
+            });
     }));
 };
 
@@ -196,4 +200,3 @@ function processDirectories(directories) {
     });
     directorySelectElement.disabled = false;
 }
-

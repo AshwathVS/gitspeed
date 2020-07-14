@@ -1,3 +1,13 @@
+const env = "prod";
+
+const getAuthEndPoint = function() {
+  if(env == "prod") {
+    return "https://us-central1-gitti-space-sl.cloudfunctions.net/api/fetch-user-token";
+  } else {
+    return "http://localhost:5001/gitti-space-sl/us-central1/api/fetch-user-token";
+  }
+}
+
 chrome.runtime.onMessage.addListener((req, sender, callback) => {
   if (req.type == "fetch-token") {
     const code = req.params.code;
@@ -5,7 +15,7 @@ chrome.runtime.onMessage.addListener((req, sender, callback) => {
     if (code && state) {
       axios
           .post(
-              "http://localhost:5001/gitti-space-sl/us-central1/api/fetch-user-token",
+              getAuthEndPoint(),
               {
                 code: code,
                 state: state,
@@ -13,7 +23,6 @@ chrome.runtime.onMessage.addListener((req, sender, callback) => {
           )
           .then((resp) => {
             const user = resp.data.user;
-            console.log(user);
             chrome.storage.sync.set({"gitspeedUser": user}, () => {
               chrome.storage.sync.get(['gitspeedData'], (data) => {
                   if(!data.gitspeedData) {

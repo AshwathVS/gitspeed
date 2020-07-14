@@ -5,7 +5,7 @@
   "permissions": ["tabs", "storage"],
   "content_scripts": [
     {
-      "matches": ["http://localhost:5001/*"],
+      "matches": ["http://localhost:5001/gitti-space-sl/us-central1/api/*", "https://us-central1-gitti-space-sl.cloudfunctions.net/api/*"],
       "js": ["oauth.js"]
     },
     { "matches": ["http://*/*", "https://*/*"], "js": ["content.js"] }

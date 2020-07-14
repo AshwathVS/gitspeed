@@ -71,11 +71,16 @@ function populatePaths() {
         const selectPathElement = document.getElementById('select-path');
         collection.sort((a, b) => {
           if(a.repo == b.repo) {
-            return a.folder - b.folder;
+            if(a.folder < b.folder) return 1;
+            else if (a.folder > b.folder) return -1;
+            else return 0;
           } else {
-            return a.repo - b.repo;
+            if(a.repo < b.repo) return 1;
+            else if (a.repo > b.repo) return -1;
+            else return 0;
           }
         });
+        console.log(collection);
         collection.forEach((ele) => {
           const opt = document.createElement('option');
           opt.value = ele.repo + ":" + ele.folder;
@@ -211,6 +216,8 @@ function commit(commitData) {
       const status = error.response.status;
       if(status == 422 || status == 409) {
         triggerNotificationBox('alert', 'Duplicate file that was not created using gitspeed already exists. Try changing the file name.');
+      } else if (status == 401) {
+        triggerNotificationBox('alert', 'Invalid access token found, please log in again to continue');
       } else {
         triggerNotificationBox('alert', 'Unexpected error during commit, please try again.');
       }
