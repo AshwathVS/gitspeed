@@ -1,5 +1,5 @@
 const githubCommitEndpoint =
-  "https://api.github.com/repos/#username/#repo/contents/#file";
+  "https://api.github.com/repos/#username/#repo/contents#file";
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -123,9 +123,9 @@ function initCommit() {
 
   let fileNameWithPath;
   if(filePath != "/") {
-    fileNameWithPath = split[1].trim() + "/" + filename;
+    fileNameWithPath = filePath + "/" + filename;
   } else {
-    fileNameWithPath = filename;
+    fileNameWithPath = filePath + filename;
   }
 
   chrome.storage.sync.get(['gitspeedData'], (data) => {
