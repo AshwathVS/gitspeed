@@ -12,7 +12,10 @@
   ],
   "browser_action": {
     "default_popup": "login.html",
-    "default_title": "Blah blah blah"
+    "default_title": "Blah blah blah",
+    "default_icon" : {
+      "16": "gitspeed.png"
+    }
   },
   "background": {
     "scripts": ["axios.min.js", "backgroundOauth.js"],

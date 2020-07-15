@@ -11,9 +11,7 @@ if (code && state) {
         code: code,
         state: state,
       },
-    },
-    () => {
-      window.close();
-    }
-  );
+    }, () => {
+      setTimeout(window.close, 2000);
+    });
 }

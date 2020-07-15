@@ -8,7 +8,7 @@ const getClientId = function() {
   } else {
     return "42b0ccb78039f4c09ede";
   }
-}
+};
 
 const getRedirectEndPoint = function() {
   if(env == "prod") {
@@ -16,7 +16,7 @@ const getRedirectEndPoint = function() {
   } else {
     return "http://localhost:5001/gitti-space-sl/us-central1/api/oauth";
   }
-}
+};
 
 document.addEventListener("DOMContentLoaded", function () {
   chrome.storage.sync.get(["gitspeedUser"], (user) => {

@@ -1,6 +1,8 @@
 const githubCommitEndpoint =
   "https://api.github.com/repos/#username/#repo/contents#file";
 
+const env = "prod";
+
 document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById("btn-cancel").addEventListener("click", resetPage);
@@ -14,6 +16,14 @@ document.addEventListener("DOMContentLoaded", function () {
   addLogo();
 
 });
+
+const getDeleteEndPoint = function() {
+  if(env == "prod") {
+    return "https://us-central1-gitti-space-sl.cloudfunctions.net/api/delete-user";
+  } else {
+    return "http://localhost:5001/gitti-space-sl/us-central1/api/delete-user";
+  }
+};
 
 function addLogo() {
   chrome.storage.sync.get(['gitspeedUser'], (data) => {
@@ -46,6 +56,8 @@ function addLogo() {
         });
         document.location.href = document.location.href.replace("home.html", "login.html");
       });
+
+      document.getElementById("delete-account").addEventListener("click", initDelete);
     }
   });
 
@@ -61,6 +73,34 @@ function addNewPath() {
 
 function resetPage() {
   document.location.reload();
+}
+
+function initDelete() {
+
+  chrome.storage.sync.get(['gitspeedUser'], (data) => {
+    const requestBody = {
+      username: data.gitspeedUser.username,
+      access_token: data.gitspeedUser.access_token
+    };
+
+    axios.delete(getDeleteEndPoint(), {
+      data: requestBody
+    }).then(() => {
+      chrome.storage.sync.clear();
+
+      triggerNotificationBox('success', "All your data has been successfully deleted.");
+
+      chrome.browserAction.setPopup({
+        popup: "login.html",
+      });
+
+      setTimeout(() => {
+        document.location.href = document.location.href.replace("home.html", "login.html");
+      }, 2000);
+    }).catch((error) => console.error);
+
+  });
+
 }
 
 function populatePaths() {
@@ -80,7 +120,7 @@ function populatePaths() {
             else return 0;
           }
         });
-        console.log(collection);
+
         collection.forEach((ele) => {
           const opt = document.createElement('option');
           opt.value = ele.repo + ":" + ele.folder;
