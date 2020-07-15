@@ -179,13 +179,13 @@ function initCommit() {
     if (fileHash) {
       commit({
         repo: repo,
-        selection: btoa(fileContent),
+        selection: Base64.encode(fileContent),
         file: fileNameWithPath,
         commitMessage: commitMessage,
         hash: fileHash
       });
     } else {
-      commit({repo: repo, selection: btoa(fileContent), file: fileNameWithPath, commitMessage: commitMessage});
+      commit({repo: repo, selection: Base64.encode(fileContent), file: fileNameWithPath, commitMessage: commitMessage});
     }
   })
 
