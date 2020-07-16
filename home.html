@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-
     <!-- bootstrap link -->
-    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap.min.css" />
 
     <!-- css file -->
-    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="home.css" />
 
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <script type="text/javascript" src="axios.min.js"></script>
     <script type="text/javascript" src="base64.min.js"></script>
     <script type="text/javascript" src="home.js"></script>
@@ -16,7 +15,9 @@
   <body>
     <div class="base">
       <div id="content" class="card-header">
-        <a href="https://gitti-space-sl.firebaseapp.com/" target="_blank"><img src="gitspeed.png" alt="G" class="header-logo"></a><span class="header-font">ITSPEED</span>
+        <a href="https://gitti-space-sl.firebaseapp.com/" target="_blank"
+          ><img src="gitspeed.png" alt="G" class="header-logo" /></a
+        ><span class="header-font">ITSPEED</span>
         <div id="context-menu">
           <div id="go-to-profile" class="item">
             Go to profile
@@ -28,60 +29,124 @@
             Logout
           </div>
         </div>
-        <img id="user-logo" class="ribbon header-logo" title="" alt="user-logo">
+        <img
+          id="user-logo"
+          class="ribbon header-logo"
+          title=""
+          alt="user-logo"
+        />
       </div>
 
       <div class="card text-center">
-        <div id="alert-box" class="alert alert-danger no-display" role="alert">
+        <div
+          id="alert-box"
+          class="alert alert-danger no-display"
+          role="alert"
+        ></div>
 
-        </div>
-
-        <div id="success-box" class="alert alert-success no-display" role="alert">
-
-        </div>
+        <div
+          id="success-box"
+          class="alert alert-success no-display"
+          role="alert"
+        ></div>
 
         <!-- File Name Enter -->
-        <div style="margin-top: 0%" class="card-body text-left">
+        <div style="margin-top: 0%;" class="card-body text-left">
           <h6>Select a path <span class="red-font">*</span></h6>
           <div class="form-row">
             <div class="col">
-              <select id="select-path" class="form-control" placeholder="Select a path">
-                <option disabled selected value="##~~INVALID~~##">Select a path</option>
+              <select
+                id="select-path"
+                class="form-control"
+                placeholder="Select a path"
+              >
+                <option disabled selected value="##~~INVALID~~##"
+                  >Select a path</option
+                >
               </select>
             </div>
             <div class="col-2">
-              <button id="btn-add-repo" class="btn btn-outline-success" data-toggle="tooltip" title="Add path"><b>+</b></button>
+              <button
+                id="btn-add-repo"
+                class="btn btn-outline-success"
+                data-toggle="tooltip"
+                title="Add path"
+              >
+                <b>+</b>
+              </button>
             </div>
           </div>
-          <br>
+          <br />
           <h6>Enter File Name <span class="red-font">*</span></h6>
           <div class="input-group mb-3">
-            <input id="inp-filename" type="text" class="form-control" placeholder="lru_cache.cpp"
-                    aria-label="Recipient's username" aria-describedby="button-addon2">
+            <input
+              id="inp-filename"
+              type="text"
+              class="form-control"
+              placeholder="lru_cache.cpp"
+              aria-label="Recipient's username"
+              aria-describedby="button-addon2"
+            />
           </div>
 
           <div class="form-group">
             <h6>Enter file content <span class="red-font">*</span></h6>
-            <textarea id="inp-file-content" class="form-control" rows="4" placeholder="#include<bits/stdc++.h> &#10;using namespace std;&#10;int main() {&#10;....."></textarea>
+            <textarea
+              id="inp-file-content"
+              class="form-control"
+              rows="4"
+              placeholder="#include<bits/stdc++.h> &#10;using namespace std;&#10;int main() {&#10;....."
+            ></textarea>
           </div>
 
           <div class="form-group">
             <h6>Commit Message</h6>
-            <textarea id="inp-commit-message" class="form-control" rows="1" placeholder="Commit made using gitspeed (optional)"></textarea>
+            <textarea
+              id="inp-commit-message"
+              class="form-control"
+              rows="1"
+              placeholder="Commit made using gitspeed (optional)"
+            ></textarea>
           </div>
 
           <div class="text-center">
-            <button id="btn-commit" type="button" class="btn btn-success">Commit File</button> &nbsp;
-            <button id="btn-cancel" type="button" class="btn btn-outline-danger">Cancel</button>
+            <button id="btn-commit" type="button" class="btn btn-success">
+              Commit File
+            </button>
+            &nbsp;
+            <button
+              id="btn-cancel"
+              type="button"
+              class="btn btn-outline-danger"
+            >
+              Reset
+            </button>
           </div>
         </div>
 
         <!-- Commit/Cancel Footer -->
-        <div class="card-footer" id='footer'>
-          <span><a href="https://github.com/AshwathVS/gitspeed" target="_blank"><img class="footer-logo" src="github.png" alt="Github"></a>&nbsp;&nbsp;</span> With <span><img class="footer-logo" src="heart.png" alt="India"></span> from <span><img class="footer-logo" src="india-logo.png" alt="India"></span>
+        <div class="card-footer" id="footer">
+          <span
+            ><a href="https://github.com/AshwathVS/gitspeed" target="_blank"
+              ><img
+                class="footer-logo"
+                src="github.png"
+                alt="Github"
+                title="Github repository" /></a
+            >&nbsp;&nbsp;</span
+          >
+          With
+          <span><img class="footer-logo" src="heart.png" alt="India" /></span>
+          from
+          <span
+            ><img
+              class="footer-logo"
+              src="india-logo.png"
+              alt="India"
+              title="India"
+          /></span>
         </div>
       </div>
     </div>
-
   </body>
 </html>

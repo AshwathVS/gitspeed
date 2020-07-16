@@ -2,16 +2,16 @@
 /* commitpage styles */
 /*  */
 
-.base{
+.base {
   text-align: center;
 }
 
-.card{
+.card {
   width: 400px;
   display: inline-block;
 }
 
-#selectrepo{
+#selectrepo {
   margin-top: 10px;
 }
 
@@ -41,11 +41,11 @@ input:focus::placeholder {
 }
 
 #content {
-  position:relative;
+  position: relative;
 }
 
 .ribbon {
-  position:absolute;
+  position: absolute;
   top: 12px;
   right: 10px;
 }
@@ -64,36 +64,42 @@ button:focus + .menu {
 }
 
 body {
-  margin:0px;
-  font-family:"Open Sans",sans-serif;
+  margin: 0px;
+  font-family: "Open Sans", sans-serif;
 }
+
 #context-menu {
-  position:fixed;
-  z-index:10000;
-  width:150px;
-  background:#1b1a1a;
-  border-radius:5px;
-  transform:scale(0);
-  transform-origin:top left;
+  position: fixed;
+  z-index: 10000;
+  width: 150px;
+  background: #1b1a1a;
+  border-radius: 5px;
+  transform: scale(0);
+  transform-origin: top right;
 }
+
 #context-menu.active {
-  transform:scale(1);
-  transition:transform 300ms ease-in-out;
+  transform: scale(1);
+  transition: transform 150ms ease-in-out;
 }
+
 #context-menu .item {
-  padding:8px 10px;
-  font-size:15px;
-  color:#eee;
+  padding: 8px 10px;
+  font-size: 15px;
+  color: #eee;
   cursor: pointer;
 }
+
 #context-menu .item:hover {
-  background:#555;
+  background: #555;
 }
+
 #context-menu .item i {
-  display:inline-block;
-  margin-right:5px;
+  display: inline-block;
+  margin-right: 5px;
 }
+
 #context-menu hr {
-  margin:2px 0px;
-  border-color:#555;
+  margin: 2px 0px;
+  border-color: #555;
 }

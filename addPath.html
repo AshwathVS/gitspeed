@@ -2,58 +2,97 @@
 <html lang="en" dir="ltr">
   <head>
     <!-- bootstrap link -->
-    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap.min.css" />
     <!-- css file -->
 
-    <link rel="stylesheet" href="addPath.css">
+    <link rel="stylesheet" href="addPath.css" />
 
     <!-- Custom scripts-->
     <script type="text/javascript" src="axios.min.js"></script>
     <script type="text/javascript" src="addPath.js"></script>
   </head>
   <body>
-
     <div class="lastpage">
-
       <div class="card-header text-center">
         <div id="content" class="card-header">
-          <a href="https://gitti-space-sl.firebaseapp.com/" target="_blank"><img src="gitspeed.png" alt="G" class="header-logo"></a><span class="header-font">ITSPEED</span>
+          <a href="https://gitti-space-sl.firebaseapp.com/" target="_blank"
+            ><img src="gitspeed.png" alt="G" class="header-logo" /></a
+          ><span class="header-font">ITSPEED</span>
         </div>
       </div>
 
       <div class="card text-center">
+        <div
+          id="alert-box"
+          class="alert alert-danger no-display"
+          role="alert"
+        ></div>
 
-        <div id="alert-box" class="alert alert-danger no-display" role="alert">
-
-        </div>
-
-        <div id="success-box" class="alert alert-success no-display" role="alert">
-
-        </div>
+        <div
+          id="success-box"
+          class="alert alert-success no-display"
+          role="alert"
+        ></div>
 
         <div class="card-body text-left">
           <div class="col">
             <h6>Repository <span class="red-font">*</span></h6>
-            <select id="select-repo" class="form-control" placeholder="Select a path" disabled>
-              <option disabled selected value="##~~INVALID~~##">Select desired repository</option>
+            <select
+              id="select-repo"
+              class="form-control"
+              placeholder="Select a path"
+              disabled
+            >
+              <option disabled selected value="##~~INVALID~~##"
+                >Select desired repository</option
+              >
             </select>
           </div>
-          <br>
+          <br />
           <div class="col">
             <h6>Directory <span class="red-font">*</span></h6>
-            <select id="select-folder" class="form-control" placeholder="Select a path" disabled>
-              <option disabled selected value="##~~INVALID~~##">Select desired directory</option>
+            <select
+              id="select-folder"
+              class="form-control"
+              placeholder="Select a path"
+              disabled
+            >
+              <option disabled selected value="##~~INVALID~~##"
+                >Select desired directory</option
+              >
             </select>
           </div>
         </div>
 
         <div>
-          <button id="btn-add" class="btn btn-outline-success">Add to favourites</button>
-          <button id="btn-cancel" class="btn btn-outline-danger">Cancel</button>
+          <button id="btn-add" class="btn btn-outline-success">
+            Add to favourites
+          </button>
+          <button id="btn-cancel" class="btn btn-outline-danger">
+            Go back
+          </button>
         </div>
 
-        <div class="card-footer" id='footer'>
-          <span><a href="https://github.com/AshwathVS/gitspeed" target="_blank"><img class="footer-logo" src="github.png" alt="Github"></a>&nbsp;&nbsp;</span> With <span><img class="footer-logo" src="heart.png" alt="India"></span> from <span><img class="footer-logo" src="india-logo.png" alt="India"></span>
+        <div class="card-footer" id="footer">
+          <span
+            ><a href="https://github.com/AshwathVS/gitspeed" target="_blank"
+              ><img
+                class="footer-logo"
+                src="github.png"
+                alt="Github"
+                title="Github repository" /></a
+            >&nbsp;&nbsp;</span
+          >
+          With
+          <span><img class="footer-logo" src="heart.png" alt="India" /></span>
+          from
+          <span
+            ><img
+              class="footer-logo"
+              src="india-logo.png"
+              alt="India"
+              title="India"
+          /></span>
         </div>
       </div>
     </div>
