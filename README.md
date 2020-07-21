@@ -1,4 +1,4 @@
-# gitspeed
+# Gitspeed
 Gitspeed is a chrome extension that is aimed towards competitive programmers to keep track of all the code that they write. 
 It brings up an easy and interactive way of committing code to your repository without keeping track locally.
 
