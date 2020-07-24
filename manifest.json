@@ -2,7 +2,7 @@
   "name": "Gitspeed",
   "version": "1.0",
   "description": "Gitspeed lets you commit files from the browser which is useful for programmers to commmit their programs, and also for note taking",
-  "permissions": ["tabs", "storage"],
+  "permissions": ["storage"],
   "content_scripts": [
     {
       "matches": [
@@ -10,8 +10,7 @@
         "https://us-central1-gitti-space-sl.cloudfunctions.net/api/*"
       ],
       "js": ["oauth.js"]
-    },
-    { "matches": ["http://*/*", "https://*/*"], "js": ["content.js"] }
+    }
   ],
   "browser_action": {
     "default_popup": "login.html",

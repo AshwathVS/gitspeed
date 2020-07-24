@@ -1,6 +1,5 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.action == "init-commit") {
-    console.log("init-commit");
     if (
       !request.params.repo ||
       !request.params.file ||

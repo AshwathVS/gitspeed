@@ -4,21 +4,35 @@ const githubCommitEndpoint =
 const env = "prod";
 
 document.addEventListener("DOMContentLoaded", function () {
-
   document.getElementById("btn-cancel").addEventListener("click", resetPage);
 
   document.getElementById("btn-commit").addEventListener("click", initCommit);
 
   document.getElementById("btn-add-repo").addEventListener("click", addNewPath);
 
+  document.getElementById("inp-filename").addEventListener("input", (e) => {
+    persist();
+  });
+
+  document.getElementById("inp-file-content").addEventListener("input", (e) => {
+    persist();
+  });
+
+  document
+    .getElementById("inp-commit-message")
+    .addEventListener("input", (e) => {
+      persist();
+    });
+
   populatePaths();
 
   addLogo();
 
+  loadPersistedData();
 });
 
-const getDeleteEndPoint = function() {
-  if(env == "prod") {
+const getDeleteEndPoint = function () {
+  if (env == "prod") {
     return "https://us-central1-gitti-space-sl.cloudfunctions.net/api/delete-user";
   } else {
     return "http://localhost:5001/gitti-space-sl/us-central1/api/delete-user";
@@ -26,10 +40,10 @@ const getDeleteEndPoint = function() {
 };
 
 function addLogo() {
-  chrome.storage.sync.get(['gitspeedUser'], (data) => {
-    if(data && data.gitspeedUser) {
+  chrome.storage.sync.get(["gitspeedUser"], (data) => {
+    if (data && data.gitspeedUser) {
       const userData = data.gitspeedUser;
-      const userLogo = document.getElementById('user-logo');
+      const userLogo = document.getElementById("user-logo");
       userLogo.src = userData.avatar_url;
       userLogo.title = userData.username;
 
@@ -50,79 +64,95 @@ function addLogo() {
       });
 
       document.getElementById("logout").addEventListener("click", () => {
-        chrome.storage.sync.remove('gitspeedUser');
+        chrome.storage.sync.remove("gitspeedUser");
         chrome.browserAction.setPopup({
           popup: "login.html",
         });
-        document.location.href = document.location.href.replace("home.html", "login.html");
+        document.location.href = document.location.href.replace(
+          "home.html",
+          "login.html"
+        );
       });
 
-      document.getElementById("delete-account").addEventListener("click", initDelete);
+      document
+        .getElementById("delete-account")
+        .addEventListener("click", initDelete);
     }
   });
 
   // Ctrl + Enter initiates commit
   window.addEventListener("keyup", (event) => {
     if (event.keyCode == 13 && event.ctrlKey) initCommit();
-  })
+  });
 }
 
 function addNewPath() {
-  document.location.href = document.location.href.replace("home.html", "addPath.html");
+  document.location.href = document.location.href.replace(
+    "home.html",
+    "addPath.html"
+  );
 }
 
 function resetPage() {
-  document.location.reload();
+  chrome.storage.local.remove("formData", () => {
+    document.location.reload();
+  });
 }
 
 function initDelete() {
-
-  chrome.storage.sync.get(['gitspeedUser'], (data) => {
+  chrome.storage.sync.get(["gitspeedUser"], (data) => {
     const requestBody = {
       username: data.gitspeedUser.username,
-      access_token: data.gitspeedUser.access_token
+      access_token: data.gitspeedUser.access_token,
     };
 
-    axios.delete(getDeleteEndPoint(), {
-      data: requestBody
-    }).then(() => {
-      chrome.storage.sync.clear();
+    axios
+      .delete(getDeleteEndPoint(), {
+        data: requestBody,
+      })
+      .then(() => {
+        chrome.storage.sync.clear();
 
-      triggerNotificationBox('success', "All your data has been successfully deleted.");
+        triggerNotificationBox(
+          "success",
+          "All your data has been successfully deleted."
+        );
 
-      chrome.browserAction.setPopup({
-        popup: "login.html",
-      });
+        chrome.browserAction.setPopup({
+          popup: "login.html",
+        });
 
-      setTimeout(() => {
-        document.location.href = document.location.href.replace("home.html", "login.html");
-      }, 2000);
-    }).catch((error) => console.error);
-
+        setTimeout(() => {
+          document.location.href = document.location.href.replace(
+            "home.html",
+            "login.html"
+          );
+        }, 2000);
+      })
+      .catch((error) => console.error);
   });
-
 }
 
 function populatePaths() {
-  chrome.storage.sync.get(['gitspeedData'], (data) => {
-    if(data && data.gitspeedData) {
+  chrome.storage.sync.get(["gitspeedData"], (data) => {
+    if (data && data.gitspeedData) {
       const collection = data.gitspeedData.collection;
       if (collection && collection.length > 0) {
-        const selectPathElement = document.getElementById('select-path');
+        const selectPathElement = document.getElementById("select-path");
         collection.sort((a, b) => {
-          if(a.repo == b.repo) {
-            if(a.folder < b.folder) return 1;
+          if (a.repo == b.repo) {
+            if (a.folder < b.folder) return 1;
             else if (a.folder > b.folder) return -1;
             else return 0;
           } else {
-            if(a.repo < b.repo) return 1;
+            if (a.repo < b.repo) return 1;
             else if (a.repo > b.repo) return -1;
             else return 0;
           }
         });
 
         collection.forEach((ele) => {
-          const opt = document.createElement('option');
+          const opt = document.createElement("option");
           opt.value = ele.repo + ":" + ele.folder;
           opt.title = "Repository: " + ele.repo + "\nDirectory: " + ele.folder;
           opt.innerHTML = ele.repo + ":  " + ele.folder;
@@ -131,49 +161,52 @@ function populatePaths() {
       }
     }
   });
-  document.getElementById('select-path').disabled = false;
+  document.getElementById("select-path").disabled = false;
 }
 
 function triggerNotificationBox(type, alertMsg) {
-  const box = (type == "alert") ? "alert-box" : "success-box";
+  const box = type == "alert" ? "alert-box" : "success-box";
   const element = document.getElementById(box);
 
   element.innerText = alertMsg;
-  element.style.display = 'block';
+  element.style.display = "block";
 
   setTimeout(() => {
-    element.innerText = '';
-    element.style.display = 'none';
+    element.innerText = "";
+    element.style.display = "none";
   }, 2000);
 }
 
 function initCommit() {
-  const option = document.getElementById('select-path').value;
-  const filename = document.getElementById('inp-filename').value;
-  const fileContent = document.getElementById('inp-file-content').value;
-  let commitMessage = document.getElementById('inp-commit-message').value;
+  const option = document.getElementById("select-path").value;
+  const filename = document.getElementById("inp-filename").value;
+  const fileContent = document.getElementById("inp-file-content").value;
+  let commitMessage = document.getElementById("inp-commit-message").value;
 
   if (!commitMessage) {
     commitMessage = "Commit made using gitspeed chrome extension";
   }
 
   if (option == "##~~INVALID~~##" || !filename || !fileContent) {
-    triggerNotificationBox('alert', "Fill in the mandatory fields and try again");
+    triggerNotificationBox(
+      "alert",
+      "Fill in the mandatory fields and try again"
+    );
     return;
   }
 
-  const split = option.split(':');
+  const split = option.split(":");
   const repo = split[0].trim();
   const filePath = split[1].trim();
 
   let fileNameWithPath;
-  if(filePath != "/") {
+  if (filePath != "/") {
     fileNameWithPath = filePath + "/" + filename;
   } else {
     fileNameWithPath = filePath + filename;
   }
 
-  chrome.storage.sync.get(['gitspeedData'], (data) => {
+  chrome.storage.sync.get(["gitspeedData"], (data) => {
     const commits = data.gitspeedData.commits;
     const fileHash = commits[repo + fileNameWithPath];
     if (fileHash) {
@@ -182,12 +215,17 @@ function initCommit() {
         selection: Base64.encode(fileContent),
         file: fileNameWithPath,
         commitMessage: commitMessage,
-        hash: fileHash
+        hash: fileHash,
       });
     } else {
-      commit({repo: repo, selection: Base64.encode(fileContent), file: fileNameWithPath, commitMessage: commitMessage});
+      commit({
+        repo: repo,
+        selection: Base64.encode(fileContent),
+        file: fileNameWithPath,
+        commitMessage: commitMessage,
+      });
     }
-  })
+  });
 
   // TODO: Seems to be some issue with messages (Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist)
   // TODO: Selection sometimes does not get the actual content (happens in hackerrank at times)
@@ -211,7 +249,10 @@ function initCommit() {
 
 function commit(commitData) {
   if (!commitData) {
-    triggerNotificationBox('alert', 'Something unexpected happened, please try again.');
+    triggerNotificationBox(
+      "alert",
+      "Something unexpected happened, please try again."
+    );
     return;
   }
   const selection = commitData.selection;
@@ -223,17 +264,17 @@ function commit(commitData) {
   chrome.storage.sync.get(["gitspeedUser"], (data) => {
     const userData = data.gitspeedUser;
     const url = githubCommitEndpoint
-        .replace("#username", userData.username)
-        .replace("#repo", repo)
-        .replace("#file", file);
+      .replace("#username", userData.username)
+      .replace("#repo", repo)
+      .replace("#file", file);
 
     var requestBody;
     if (fileHash) {
       requestBody = {
         message: commitMessage,
         content: selection,
-        sha: fileHash
-      }
+        sha: fileHash,
+      };
     } else {
       requestBody = {
         message: commitMessage,
@@ -241,35 +282,65 @@ function commit(commitData) {
       };
     }
 
-    axios.put(
-        url,
-        requestBody,
-        {
-          headers: {
-            Authorization: "token " + userData.access_token,
-          },
+    axios
+      .put(url, requestBody, {
+        headers: {
+          Authorization: "token " + userData.access_token,
+        },
+      })
+      .then((response) => {
+        triggerNotificationBox("success", "Commit has been successful");
+        saveCommitDetails(repo, file, response);
+      })
+      .catch((error) => {
+        const status = error.response.status;
+        if (status == 422 || status == 409) {
+          triggerNotificationBox(
+            "alert",
+            "Duplicate file that was not created using gitspeed already exists. Try changing the file name."
+          );
+        } else if (status == 401) {
+          triggerNotificationBox(
+            "alert",
+            "Invalid access token found, please log in again to continue"
+          );
+        } else {
+          triggerNotificationBox(
+            "alert",
+            "Unexpected error during commit, please try again."
+          );
         }
-    ).then((response) => {
-      triggerNotificationBox('success', "Commit has been successful");
-      saveCommitDetails(repo, file, response);
-    }).catch((error) => {
-      const status = error.response.status;
-      if(status == 422 || status == 409) {
-        triggerNotificationBox('alert', 'Duplicate file that was not created using gitspeed already exists. Try changing the file name.');
-      } else if (status == 401) {
-        triggerNotificationBox('alert', 'Invalid access token found, please log in again to continue');
-      } else {
-        triggerNotificationBox('alert', 'Unexpected error during commit, please try again.');
-      }
-    });
+      });
   });
 }
 
 function saveCommitDetails(repo, file, response) {
-  chrome.storage.sync.get(['gitspeedData'], (data) => {
+  chrome.storage.sync.get(["gitspeedData"], (data) => {
     const gitspeedData = data.gitspeedData;
     let commits = gitspeedData.commits;
     commits[repo + file] = response.data.content.sha;
-    chrome.storage.sync.set({'gitspeedData': gitspeedData});
+    chrome.storage.sync.set({ gitspeedData: gitspeedData });
+  });
+}
+
+function persist() {
+  chrome.storage.local.set({
+    formData: {
+      fileName: document.getElementById("inp-filename").value,
+      fileContent: document.getElementById("inp-file-content").value,
+      commitMessage: document.getElementById("inp-commit-message").value,
+    },
+  });
+}
+
+function loadPersistedData() {
+  chrome.storage.local.get("formData", (data) => {
+    const formData = data.formData;
+    if (formData) {
+      document.getElementById("inp-filename").value = formData.fileName;
+      document.getElementById("inp-file-content").value = formData.fileContent;
+      document.getElementById("inp-commit-message").value =
+        formData.commitMessage;
+    }
   });
 }
