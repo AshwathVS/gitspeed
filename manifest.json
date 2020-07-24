@@ -1,6 +1,6 @@
 {
   "name": "Gitspeed",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Gitspeed lets you commit files from the browser which is useful for programmers to commmit their programs, and also for note taking",
   "permissions": ["storage"],
   "content_scripts": [
