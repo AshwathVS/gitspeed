@@ -164,7 +164,7 @@ function populatePaths() {
   document.getElementById("select-path").disabled = false;
 }
 
-function triggerNotificationBox(type, alertMsg) {
+function triggerNotificationBox(type, alertMsg, shouldResetPage) {
   const box = type == "alert" ? "alert-box" : "success-box";
   const element = document.getElementById(box);
 
@@ -174,6 +174,7 @@ function triggerNotificationBox(type, alertMsg) {
   setTimeout(() => {
     element.innerText = "";
     element.style.display = "none";
+    if (shouldResetPage) resetPage();
   }, 2000);
 }
 
@@ -289,7 +290,7 @@ function commit(commitData) {
         },
       })
       .then((response) => {
-        triggerNotificationBox("success", "Commit has been successful");
+        triggerNotificationBox("success", "Commit has been successful", true);
         saveCommitDetails(repo, file, response);
       })
       .catch((error) => {
